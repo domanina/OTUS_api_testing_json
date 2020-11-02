@@ -12,7 +12,7 @@ class APIClient:
         self.base_address = base_address
 
     def get_brew(self, path="/", params=None, query="?",cond="="):
-        url = self.base_address + path + query + cond
+        url = self.base_address + path
         print("GET request to {}".format(url))
         return requests.get(url=url, params=params)
 
@@ -20,6 +20,22 @@ class APIClient:
         url = self.base_address + path
         print("POST request to {}".format(url))
         return requests.post(url=url, params=params, data=data, headers=headers)
+
+    def put_brew(self, path="/", params=None, data=None, headers=None):
+        url = self.base_address + path
+        print("PUT request to {}".format(url))
+        return requests.put(url=url, params=params, data=data, headers=headers)
+
+    def patch_brew(self, path="/", params=None, data=None, headers=None):
+        url = self.base_address + path
+        print("PATCH request to {}".format(url))
+        return requests.patch(url=url, params=params, data=data, headers=headers)
+
+    def delete_brew(self, path="/", params=None, data=None, headers=None):
+        url = self.base_address + path
+        print("DELETE request to {}".format(url))
+        return requests.delete(url=url, params=params, data=data, headers=headers)
+
 
 
 # Тестовое API: ttps://jsonplaceholder.typicode.com/posts/
