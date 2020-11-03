@@ -1,6 +1,7 @@
 import pytest
 import requests
-
+import cerberus
+from jsonschema import validate
 
 # check json by id posts
 @pytest.mark.parametrize("params",
@@ -118,16 +119,27 @@ def test_apt_delete(api_client_brew, params):
     print(delete_res.status_code)
     assert delete_res.status_code == params["status"]
 
-#FILTERING by userID
+
+#FILTERING by userID +schema validating
 @pytest.mark.parametrize("params",
                          [{"var": "3", "status": 200},
-                          {"var": "0", "status": 200, "body": b'[]'}
+                          {"var": "0", "status": 200}
                           ])
-def test_api_filtering(api_client_brew,params):
+def test_api_filtering(api_client_brew, params):
+    schema = {
+        "type": "object",
+        "properties": {
+            "id": {"type": "number"},
+            "userId": {"type": "number"},
+            "title": {"type": "string"},
+            "body": {"type": "string"}
+        }
+    }
+
     res = api_client_brew.get_brew(
         path="/posts?userId="+params["var"])
-    print(res.status_code)
+
     assert res.status_code == params["status"]
-    #if res.content == params["body"]:
-        #assert res.content == params["body"]
+    validate(instance=res.json(), schema=schema)
+
 
