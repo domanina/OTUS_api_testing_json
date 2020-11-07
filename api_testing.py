@@ -138,8 +138,13 @@ def test_api_filtering(api_client_brew, params):
 
     res = api_client_brew.get_brew(
         path="/posts?userId="+params["var"])
+    print(type(res.json()))
+    print(res.json())
+
+
 
     assert res.status_code == params["status"]
-    validate(instance=res.json(), schema=schema)
+    for i in res.json():
+        validate(instance=i, schema=schema)
 
 
