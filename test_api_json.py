@@ -1,5 +1,5 @@
 import pytest
-from jsonschema import validate
+
 
 # check json by id
 # get positive
@@ -47,13 +47,6 @@ def test_api_get_len(api_client_brew, params):
 
 # POST REQUESTS
 # positive post tests
-# @pytest.mark.parametrize('input_id, output_id',
-#                          [(100, '100'),
-#                           (0, '0')])
-# @pytest.mark.parametrize('input_title, output_title',
-#                          [('test', 'test'),
-#                           ('', ''),
-#                           (100, '100')])      input_id, output_id, input_title, output_title
 def test_api_post(api_client_brew):
     post_data = api_client_brew.post_brew(
         path="/todos",
@@ -74,7 +67,6 @@ def test_api_negative_post(api_client_brew, path_for_test):
     print(post_data.status_code)
 
     assert post_data.status_code == 404
-
 
 
 def test_exception_post(api_client_brew):
@@ -107,7 +99,6 @@ def test_api_negative_put(api_client_brew):
     assert put_data.status_code == 500
 
 
-
 @pytest.mark.parametrize("params",
                          [{"var": "/13", "status": 200},
                           {"var": "/0", "status": 200}
@@ -119,6 +110,7 @@ def test_api_patch(api_client_brew, params):
     print(patch_data.status_code)
     assert patch_data.status_code == params["status"]
     assert patch_data.json()['title'] == "updating title"
+
 
 # DELETE REQUESTS
 @pytest.mark.parametrize("params",
@@ -140,28 +132,24 @@ def test_apt_delete(api_client_brew, params):
                           {"key": "id", "value": "3", "result": 3},
                           {"key": "title", "value": "et doloremque nulla", "result": "et doloremque nulla"}
                           ])
-def test_api_filtering(api_client_brew, params):
-    # schema = {
-    #     "type": "object",
-    #     "properties": {
-    #         "id": {"type": "number"},
-    #         "userId": {"type": "number"},
-    #         "title": {"type": "string"},
-    #         "body": {"type": "string"}
-    #     }
-    # }
+def test_api_positive_filtering(api_client_brew, params):
 
     res = api_client_brew.get_brew(
-        path="/todos?" + params["key"] + "=" + str(params["value"])
-    )
+        path="/todos?" + params["key"] + "=" + params["value"])
 
     for i in res.json():
         assert i[params["key"]] == params["result"]
-#
-#
-#
-#     assert res.status_code == params["status"]
-#     for i in res.json():
-#         validate(instance=i, schema=schema)
 
+
+
+@pytest.mark.parametrize("params",
+                         [{"key": "userId", "value": "110", "result": 110},
+                          {"key": "completed", "value": "maybe true", "result": False}
+                          ])
+def test_api_negative_filtering(api_client_brew, params):
+    res = api_client_brew.get_brew(
+        path="/todos?" + params["key"] + "=" + params["value"])
+
+    assert res.status_code == 200
+    assert res.json() == []
 

@@ -11,7 +11,7 @@ class APIClient:
     def __init__(self, base_address):
         self.base_address = base_address
 
-    def get_brew(self, path="/", params=None, query="?",cond="="):
+    def get_brew(self, path="/", params=None, query="?", cond="="):
         url = self.base_address + path
         print("GET request to {}".format(url))
         return requests.get(url=url, params=params)
@@ -35,7 +35,6 @@ class APIClient:
         url = self.base_address + path
         print("DELETE request to {}".format(url))
         return requests.delete(url=url, params=params, data=data, headers=headers)
-
 
 
 # Тестовое API: ttps://jsonplaceholder.typicode.com/posts/
