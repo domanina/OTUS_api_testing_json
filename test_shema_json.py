@@ -13,3 +13,10 @@ def test_get_post(api_client_brew):
         path="/todos/1"
     )
     assert_valid_schema(res.json(), 'schema.json')
+
+
+def test_get_postS(api_client_brew):
+    res = api_client_brew.get_brew(
+        path="/todos"
+    )
+    assert_valid_schema(res.json(), 'schema_todos.json')
