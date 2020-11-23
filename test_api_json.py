@@ -1,6 +1,5 @@
 import pytest
 
-
 # check json by id
 # get positive
 @pytest.mark.parametrize("params",

@@ -2,6 +2,7 @@ import pytest
 import requests
 
 
+
 class APIClient:
     """
     Упрощенный клиент для работы с API
